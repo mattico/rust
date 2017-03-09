@@ -13,7 +13,7 @@ use core::fmt::Debug;
 use core::hash::{Hash, Hasher};
 use core::iter::{FromIterator, Peekable, FusedIterator};
 use core::marker::PhantomData;
-use core::ops::Index;
+use core::ops::{Index, InPlace, Place, Placer};
 use core::{fmt, intrinsics, mem, ptr};
 
 use borrow::Borrow;
@@ -446,6 +446,62 @@ impl<'a, K: 'a + Debug + Ord, V: 'a + Debug> Debug for OccupiedEntry<'a, K, V> {
          .finish()
     }
 }
+
+/// A place for insertion to a `Entry`.
+///
+/// See [`BTreeMap::entry`](struct.BTreeMap.html#method.entry) for details.
+#[must_use = "places do nothing unless written to with <- syntax"]
+#[unstable(feature = "collection_placement",
+           reason = "struct name and placement protocol is subject to change",
+           issue = "30172")]
+#[derive(Debug)]
+pub struct EntryPlace<'a, K: 'a + Debug + Ord, V: 'a> {
+    entry: Entry<'a, K, V>,
+    value: V,
+}
+
+#[unstable(feature = "collection_placement",
+           reason = "placement protocol is subject to change",
+           issue = "30172")]
+impl<'a, K, V> Placer<V> for Entry<'a, K, V>
+    where K: 'a  + Debug + Ord {
+    type Place = EntryPlace<'a, K, V>;
+
+    fn make_place(self) -> EntryPlace<'a, K, V> {
+        let uninit = unsafe { mem::uninitialized() };
+        EntryPlace { entry: self, value: uninit }
+    }
+}
+
+#[unstable(feature = "collection_placement",
+           reason = "placement protocol is subject to change",
+           issue = "30172")]
+impl<'a, K, V> Place<V> for EntryPlace<'a, K, V> 
+    where K: 'a  + Debug + Ord {
+    fn pointer(&mut self) -> *mut V {
+        &mut self.value
+    }
+}
+
+#[unstable(feature = "collection_placement",
+           reason = "placement protocol is subject to change",
+           issue = "30172")]
+impl<'a, K, V> InPlace<V> for EntryPlace<'a, K, V>
+    where K: 'a  + Debug + Ord {
+    type Owner = ();
+
+    unsafe fn finalize(self) {
+        match self.entry {
+            Occupied(mut o) => {
+                o.insert(self.value);
+            }
+            Vacant(v) => {
+                v.insert(self.value);
+            }
+        }
+    }
+}
+
 
 // An iterator for merging two sorted sequences into one
 struct MergeIter<K, V, I: Iterator<Item = (K, V)>> {

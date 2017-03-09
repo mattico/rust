@@ -12,6 +12,7 @@ use std::collections::BTreeMap;
 use std::collections::Bound::{self, Excluded, Included, Unbounded};
 use std::collections::btree_map::Entry::{Occupied, Vacant};
 use std::rc::Rc;
+use panic;
 
 use std::iter::FromIterator;
 use super::DeterministicRng;
@@ -684,4 +685,30 @@ fn test_split_off_large_random_sorted() {
 
     assert!(map.into_iter().eq(data.clone().into_iter().filter(|x| x.0 < key)));
     assert!(right.into_iter().eq(data.into_iter().filter(|x| x.0 >= key)));
+}
+
+#[test]
+fn test_placement_in() {
+    let mut map = HashMap::new();
+    map.extend((0..10).map(|i| (i, i)));
+
+    map.entry(100) <- 100;
+    assert_eq!(map[&100], 100);
+
+    map.entry(0) <- 10;
+    assert_eq!(map[&0], 10);
+
+    assert_eq!(map.len(), 11);
+}
+
+#[test]
+fn test_placement_panic() {
+    let mut map = HashMap::new();
+    map.extend((0..10).map(|i| (i, i)));
+
+    fn mkpanic() -> usize { panic!() }
+
+    let _ = panic::catch_unwind(panic::AssertUnwindSafe(|| { map.entry(0) <- mkpanic(); }));
+    assert_eq!(map.len(), 10);
+    assert_eq!(map[&0], 0);
 }
