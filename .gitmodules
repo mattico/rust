@@ -23,3 +23,6 @@
 [submodule "book"]
 	path = src/doc/book
 	url = https://github.com/rust-lang/book.git
+[submodule "src/libcompiler_builtins"]
+	path = src/libcompiler_builtins
+	url = https://github.com/mattico/compiler-builtins
