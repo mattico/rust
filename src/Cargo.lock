@@ -162,6 +162,7 @@ name = "compiler_builtins"
 version = "0.0.0"
 dependencies = [
  "compiler-rt 0.1.0",
+ "core 0.0.0",
  "gcc 0.3.45 (registry+https://github.com/rust-lang/crates.io-index)",
  "gcc_s 0.1.0",
  "quickcheck 0.3.2 (registry+https://github.com/rust-lang/crates.io-index)",
