@@ -156,17 +156,7 @@ before_script:
   # If we are building a pull request, do the build if $ALLOW_PR == 1
   # Otherwise, do the build if we are on the auto branch, or the try branch and $ALLOW_TRY == 1
   - >
-      if [[ "$TRAVIS_PULL_REQUEST" != "false" ]]; then
-          if [[ "$ALLOW_PR" == "1" ]]; then
-              SKIP_BUILD=false;
-          else
-              SKIP_BUILD=true;
-          fi
-      elif [[ "$TRAVIS_BRANCH" == "auto" || ( "$ALLOW_TRY" == "1" && "$TRAVIS_BRANCH" == "try" ) ]]; then
-          SKIP_BUILD=false;
-      else
-          SKIP_BUILD=true;
-      fi
+      SKIP_BUILD=false
 
       if [[ "$SKIP_BUILD" == true ]]; then
           export RUN_SCRIPT="echo 'skipping, not a full build'";
