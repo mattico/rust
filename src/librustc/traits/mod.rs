@@ -158,8 +158,8 @@ pub enum ObligationCauseCode<'tcx> {
     ObjectCastObligation(/* Object type */ Ty<'tcx>),
 
     // Various cases where expressions must be sized/copy/etc:
-    /// L = X implies that L is Sized
-    AssignmentLhsSized,
+    /// L = X implies that X is Sized
+    AssignmentRhsSized,
     /// (x1, .., xn) must be Sized
     TupleInitializerSized,
     /// S { ... } must be Sized

@@ -874,7 +874,8 @@ fn typeck_tables_of<'a, 'tcx>(tcx: TyCtxt<'a, 'tcx, 'tcx>,
             let fcx = FnCtxt::new(&inh, param_env, body.value.id);
             let expected_type = tcx.type_of(def_id);
             let expected_type = fcx.normalize_associated_types_in(body.value.span, &expected_type);
-            fcx.require_type_is_sized(expected_type, body.value.span, traits::ConstSized);
+            //fcx.require_type_is_sized(expected_type, body.value.span, traits::ConstSized);
+            //TODO
 
             // Gather locals in statics (because of block expressions).
             // This is technically unnecessary because locals in static items are forbidden,
@@ -982,19 +983,20 @@ impl<'a, 'gcx, 'tcx> Visitor<'gcx> for GatherLocalsVisitor<'a, 'gcx, 'tcx> {
 
     // Add pattern bindings.
     fn visit_pat(&mut self, p: &'gcx hir::Pat) {
-        if let PatKind::Binding(_, _, ref path1, _) = p.node {
-            let var_ty = self.assign(p.span, p.id, None);
+        // TODO
+        // if let PatKind::Binding(_, _, ref path1, _) = p.node {
+        //     let var_ty = self.assign(p.span, p.id, None);
 
-            self.fcx.require_type_is_sized(var_ty, p.span,
-                                           traits::VariableType(p.id));
+        //     self.fcx.require_type_is_sized(var_ty, p.span,
+        //                                    traits::VariableType(p.id));
 
-            debug!("Pattern binding {} is assigned to {} with type {:?}",
-                   path1.node,
-                   self.fcx.ty_to_string(
-                       self.fcx.locals.borrow().get(&p.id).unwrap().clone()),
-                   var_ty);
-        }
-        intravisit::walk_pat(self, p);
+        //     debug!("Pattern binding {} is assigned to {} with type {:?}",
+        //            path1.node,
+        //            self.fcx.ty_to_string(
+        //                self.fcx.locals.borrow().get(&p.id).unwrap().clone()),
+        //            var_ty);
+        // }
+        // intravisit::walk_pat(self, p);
     }
 
     // Don't descend into the bodies of nested closures
@@ -1070,9 +1072,10 @@ fn check_fn<'a, 'gcx, 'tcx>(inherited: &'a Inherited<'a, 'gcx, 'tcx>,
         // The check for a non-trivial pattern is a hack to avoid duplicate warnings
         // for simple cases like `fn foo(x: Trait)`,
         // where we would error once on the parameter as a whole, and once on the binding `x`.
-        if arg.pat.simple_name().is_none() {
-            fcx.require_type_is_sized(arg_ty, decl.output.span(), traits::MiscObligation);
-        }
+        // TODO
+        // if arg.pat.simple_name().is_none() {
+        //     fcx.require_type_is_sized(arg_ty, decl.output.span(), traits::MiscObligation);
+        // }
 
         fcx.write_ty(arg.hir_id, arg_ty);
     }
@@ -3559,7 +3562,8 @@ impl<'a, 'gcx, 'tcx> FnCtxt<'a, 'gcx, 'tcx> {
                 }
             }
         }
-        self.require_type_is_sized(struct_ty, expr.span, traits::StructInitializerSized);
+        //TODO
+        //self.require_type_is_sized(struct_ty, expr.span, traits::StructInitializerSized);
         struct_ty
     }
 
@@ -3899,7 +3903,8 @@ impl<'a, 'gcx, 'tcx> FnCtxt<'a, 'gcx, 'tcx> {
                 }
             }
 
-            self.require_type_is_sized(lhs_ty, lhs.span, traits::AssignmentLhsSized);
+            // TODO
+            self.require_type_is_sized(rhs_ty, rhs.span, traits::AssignmentRhsSized);
 
             if lhs_ty.references_error() || rhs_ty.references_error() {
                 tcx.types.err

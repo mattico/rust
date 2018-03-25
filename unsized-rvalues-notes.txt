@@ -1,0 +1,25 @@
+# Notes for implementing unsized rvalues
+
+unsized local error: E0277
+
+## librustc/traits/error_reporting.rs:550
+generic error for trait selection
+from .. .. InferCtxt::report_fulfillment_errors
+1357: errors for each type of sized requirement
+
+next level I think is
+
+## librustc_typeck/check/compare_method.rs:337
+
+
+## librustc_typeck/check/mod.rs:check_fn
+typecks the body of a fn
+988: requires pattern bindigns (incl. all locals?) to be sized
+1073: requires fn args to be sized
+3562: requires struct initialization exprs to be sized
+3902: requires assignment lhs to be sized
+4127: requires tuple initializers to be sized
+
+Require*Sized traits are from rustc::traits
+
+## librustc_trans/common.rs:type_is_sized

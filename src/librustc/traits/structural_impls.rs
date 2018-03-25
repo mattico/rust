@@ -203,7 +203,7 @@ impl<'a, 'tcx> Lift<'tcx> for traits::ObligationCauseCode<'a> {
             super::ObjectCastObligation(ty) => {
                 tcx.lift(&ty).map(super::ObjectCastObligation)
             }
-            super::AssignmentLhsSized => Some(super::AssignmentLhsSized),
+            super::AssignmentRhsSized => Some(super::AssignmentRhsSized),
             super::TupleInitializerSized => Some(super::TupleInitializerSized),
             super::StructInitializerSized => Some(super::StructInitializerSized),
             super::VariableType(id) => Some(super::VariableType(id)),

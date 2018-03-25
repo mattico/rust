@@ -1414,8 +1414,8 @@ impl<'a, 'gcx, 'tcx> InferCtxt<'a, 'gcx, 'tcx> {
                 err.note("the yield type of a generator must have a \
                           statically known size");
             }
-            ObligationCauseCode::AssignmentLhsSized => {
-                err.note("the left-hand-side of an assignment must have a statically known size");
+            ObligationCauseCode::AssignmentRhsSized => {
+                err.note("the right-hand-side of an assignment must have a statically known size");
             }
             ObligationCauseCode::TupleInitializerSized => {
                 err.note("tuples must have a statically known size to be initialized");
