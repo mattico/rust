@@ -983,20 +983,21 @@ impl<'a, 'gcx, 'tcx> Visitor<'gcx> for GatherLocalsVisitor<'a, 'gcx, 'tcx> {
 
     // Add pattern bindings.
     fn visit_pat(&mut self, p: &'gcx hir::Pat) {
-        // TODO
-        // if let PatKind::Binding(_, _, ref path1, _) = p.node {
-        //     let var_ty = self.assign(p.span, p.id, None);
+        
+        if let PatKind::Binding(_, _, ref path1, _) = p.node {
+            let var_ty = self.assign(p.span, p.id, None);
 
-        //     self.fcx.require_type_is_sized(var_ty, p.span,
-        //                                    traits::VariableType(p.id));
+            // TODO
+            // self.fcx.require_type_is_sized(var_ty, p.span,
+            //                                traits::VariableType(p.id));
 
-        //     debug!("Pattern binding {} is assigned to {} with type {:?}",
-        //            path1.node,
-        //            self.fcx.ty_to_string(
-        //                self.fcx.locals.borrow().get(&p.id).unwrap().clone()),
-        //            var_ty);
-        // }
-        // intravisit::walk_pat(self, p);
+            debug!("Pattern binding {} is assigned to {} with type {:?}",
+                   path1.node,
+                   self.fcx.ty_to_string(
+                       self.fcx.locals.borrow().get(&p.id).unwrap().clone()),
+                   var_ty);
+        }
+        intravisit::walk_pat(self, p);
     }
 
     // Don't descend into the bodies of nested closures
