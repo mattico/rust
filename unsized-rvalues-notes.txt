@@ -23,3 +23,8 @@ typecks the body of a fn
 Require*Sized traits are from rustc::traits
 
 ## librustc_trans/common.rs:type_is_sized
+
+# TODO
+
+- [ ] move trait-bounds-not-on-bare-trait to ui test
+- [ ] fixup other moved tests
