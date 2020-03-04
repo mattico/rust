@@ -963,7 +963,7 @@ impl<'hir> LoweringContext<'_, 'hir> {
         id
     }
 
-    fn lower_body(
+    pub(super) fn lower_body(
         &mut self,
         f: impl FnOnce(&mut Self) -> (&'hir [hir::Param<'hir>], hir::Expr<'hir>),
     ) -> hir::BodyId {
