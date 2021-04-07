@@ -151,6 +151,9 @@ pub fn to_llvm_feature<'a>(sess: &Session, s: &'a str) -> &'a str {
         ("x86", "avx512vpclmulqdq") => "vpclmulqdq",
         ("aarch64", "fp") => "fp-armv8",
         ("aarch64", "fp16") => "fullfp16",
+        ("arm", "fpv2") => "vfpv2",
+        ("arm", "fpv3") => "vfpv3",
+        ("arm", "fpv4") => "vfpv4",
         (_, s) => s,
     }
 }
