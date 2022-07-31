@@ -91,7 +91,7 @@ impl<'tcx> LateLintPass<'tcx> for UnusedResults {
             _ => return,
         };
 
-        if let hir::ExprKind::Ret(..) = expr.kind {
+        if let hir::ExprKind::Ret(..) | hir::ExprKind::Become(..) = expr.kind {
             return;
         }
 
@@ -482,7 +482,7 @@ trait UnusedDelimLint {
         lhs_needs_parens
             || (followed_by_block
                 && match &inner.kind {
-                    ExprKind::Ret(_) | ExprKind::Break(..) | ExprKind::Yield(..) => true,
+                    ExprKind::Ret(_) | ExprKind::Become(_) | ExprKind::Break(..) | ExprKind::Yield(..) => true,
                     ExprKind::Range(_lhs, Some(rhs), _limits) => {
                         matches!(rhs.kind, ExprKind::Block(..))
                     }

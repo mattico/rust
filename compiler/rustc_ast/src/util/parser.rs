@@ -246,6 +246,7 @@ pub enum ExprPrecedence {
     Break,
     Continue,
     Ret,
+    Become,
     Yield,
     Yeet,
 
@@ -300,6 +301,7 @@ impl ExprPrecedence {
             ExprPrecedence::Break |
             ExprPrecedence::Continue |
             ExprPrecedence::Ret |
+            ExprPrecedence::Become |
             ExprPrecedence::Yield |
             ExprPrecedence::Yeet => PREC_JUMP,
 

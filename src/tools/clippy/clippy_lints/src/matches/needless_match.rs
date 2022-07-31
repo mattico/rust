@@ -108,7 +108,7 @@ fn check_if_let_inner(cx: &LateContext<'_>, if_let: &higher::IfLet<'_>) -> bool 
 
 /// Strip `return` keyword if the expression type is `ExprKind::Ret`.
 fn strip_return<'hir>(expr: &'hir Expr<'hir>) -> &'hir Expr<'hir> {
-    if let ExprKind::Ret(Some(ret)) = expr.kind {
+    if let ExprKind::Ret(Some(ret)) | ExprKind::Become(Some(ret)) = expr.kind {
         ret
     } else {
         expr

@@ -198,7 +198,7 @@ fn expr_return_none_or_err(
     err_sym: Option<Symbol>,
 ) -> bool {
     match peel_blocks_with_stmt(expr).kind {
-        ExprKind::Ret(Some(ret_expr)) => expr_return_none_or_err(smbl, cx, ret_expr, cond_expr, err_sym),
+        ExprKind::Ret(Some(ret_expr)) | ExprKind::Become(Some(ret_expr)) => expr_return_none_or_err(smbl, cx, ret_expr, cond_expr, err_sym),
         ExprKind::Path(ref qpath) => match smbl {
             sym::Option => is_lang_ctor(cx, qpath, OptionNone),
             sym::Result => path_to_local(expr).is_some() && path_to_local(expr) == path_to_local(cond_expr),

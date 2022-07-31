@@ -82,7 +82,7 @@ impl<'a, 'tcx> Builder<'a, 'tcx> {
         match expr.kind {
             // Don't bother with StorageLive and Dead for these temporaries,
             // they are never assigned.
-            ExprKind::Break { .. } | ExprKind::Continue { .. } | ExprKind::Return { .. } => (),
+            ExprKind::Break { .. } | ExprKind::Continue { .. } | ExprKind::Return { .. } | ExprKind::Become { .. } => (),
             ExprKind::Block { body: Block { expr: None, targeted_by_break: false, .. } }
                 if expr_ty.is_never() => {}
             _ => {

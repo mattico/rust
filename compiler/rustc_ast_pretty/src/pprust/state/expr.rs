@@ -67,6 +67,7 @@ impl<'a> State<'a> {
             ast::ExprKind::Break(..)
             | ast::ExprKind::Closure(..)
             | ast::ExprKind::Ret(..)
+            | ast::ExprKind::Become(..)
             | ast::ExprKind::Yeet(..) => true,
             _ => parser::contains_exterior_struct_lit(expr),
         }
@@ -502,6 +503,13 @@ impl<'a> State<'a> {
             }
             ast::ExprKind::Ret(ref result) => {
                 self.word("return");
+                if let Some(ref expr) = *result {
+                    self.word(" ");
+                    self.print_expr_maybe_paren(expr, parser::PREC_JUMP);
+                }
+            }
+            ast::ExprKind::Become(ref result) => {
+                self.word("become");
                 if let Some(ref expr) = *result {
                     self.word(" ");
                     self.print_expr_maybe_paren(expr, parser::PREC_JUMP);

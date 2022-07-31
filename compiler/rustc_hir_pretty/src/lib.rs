@@ -1083,7 +1083,7 @@ impl<'a> State<'a> {
     // parses as the erroneous construct `if (return {})`, not `if (return) {}`.
     fn cond_needs_par(expr: &hir::Expr<'_>) -> bool {
         match expr.kind {
-            hir::ExprKind::Break(..) | hir::ExprKind::Closure { .. } | hir::ExprKind::Ret(..) => {
+            hir::ExprKind::Break(..) | hir::ExprKind::Closure { .. } | hir::ExprKind::Ret(..) | hir::ExprKind::Become(..) => {
                 true
             }
             _ => contains_exterior_struct_lit(expr),
@@ -1539,6 +1539,13 @@ impl<'a> State<'a> {
             }
             hir::ExprKind::Ret(result) => {
                 self.word("return");
+                if let Some(expr) = result {
+                    self.word(" ");
+                    self.print_expr_maybe_paren(expr, parser::PREC_JUMP);
+                }
+            }
+            hir::ExprKind::Become(result) => {
+                self.word("become");
                 if let Some(expr) = result {
                     self.word(" ");
                     self.print_expr_maybe_paren(expr, parser::PREC_JUMP);

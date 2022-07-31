@@ -137,7 +137,7 @@ struct RetCollector {
 impl<'tcx> Visitor<'tcx> for RetCollector {
     fn visit_expr(&mut self, expr: &Expr<'_>) {
         match expr.kind {
-            ExprKind::Ret(..) => {
+            ExprKind::Ret(..) | ExprKind::Become(..) => {
                 if self.loop_depth > 0 && !self.ret_in_loop {
                     self.ret_in_loop = true;
                 }

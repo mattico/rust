@@ -148,7 +148,7 @@ pub fn contains_return_break_continue_macro(expression: &Expr<'_>) -> bool {
             return false;
         }
         match &ex.kind {
-            ExprKind::Ret(..) | ExprKind::Break(..) | ExprKind::Continue(..) => {
+            ExprKind::Ret(..) | ExprKind::Become(..) | ExprKind::Break(..) | ExprKind::Continue(..) => {
                 seen_return_break_continue = true;
             },
             // Something special could be done here to handle while or for loop

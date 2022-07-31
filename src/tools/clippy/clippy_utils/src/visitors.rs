@@ -191,7 +191,7 @@ where
             }
             if self.in_stmt {
                 match expr.kind {
-                    hir::ExprKind::Ret(Some(expr)) => self.inside_stmt(false).visit_expr(expr),
+                    hir::ExprKind::Ret(Some(expr)) | hir::ExprKind::Become(Some(expr)) => self.inside_stmt(false).visit_expr(expr),
                     _ => intravisit::walk_expr(self, expr),
                 }
             } else {
@@ -210,7 +210,7 @@ where
                         }
                     },
                     hir::ExprKind::Block(..) => intravisit::walk_expr(self, expr),
-                    hir::ExprKind::Ret(Some(expr)) => self.visit_expr(expr),
+                    hir::ExprKind::Ret(Some(expr)) | hir::ExprKind::Become(Some(expr)) => self.visit_expr(expr),
                     _ => self.failed |= !(self.cb)(expr),
                 }
             }
@@ -657,6 +657,7 @@ pub fn for_each_unconsumed_temporary<'tcx, B>(
             // Either drops temporaries, jumps out of the current expression, or has no sub expression.
             ExprKind::DropTemps(_)
             | ExprKind::Ret(_)
+            | ExprKind::Become(_)
             | ExprKind::Break(..)
             | ExprKind::Yield(..)
             | ExprKind::Block(..)

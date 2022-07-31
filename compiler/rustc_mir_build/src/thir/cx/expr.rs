@@ -639,6 +639,9 @@ impl<'tcx> Cx<'tcx> {
             hir::ExprKind::Ret(ref v) => {
                 ExprKind::Return { value: v.as_ref().map(|v| self.mirror_expr(v)) }
             }
+            hir::ExprKind::Become(ref v) => {
+                ExprKind::Become { value: v.as_ref().map(|v| self.mirror_expr(v)) }
+            }
             hir::ExprKind::Break(dest, ref value) => match dest.target_id {
                 Ok(target_id) => ExprKind::Break {
                     label: region::Scope { id: target_id.local_id, data: region::ScopeData::Node },

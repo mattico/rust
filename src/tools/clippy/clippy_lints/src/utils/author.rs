@@ -549,6 +549,11 @@ impl<'a, 'tcx> PrintVisitor<'a, 'tcx> {
                 kind!("Ret({value})");
                 value.if_some(|e| self.expr(e));
             },
+            ExprKind::Become(value) => {
+                opt_bind!(self, value);
+                kind!("Become({value})");
+                value.if_some(|e| self.expr(e));
+            }
             ExprKind::InlineAsm(_) => {
                 kind!("InlineAsm(_)");
                 out!("// unimplemented: `ExprKind::InlineAsm` is not further destructured at the moment");

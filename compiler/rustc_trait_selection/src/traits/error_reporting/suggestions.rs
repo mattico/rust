@@ -2912,7 +2912,7 @@ impl<'v> Visitor<'v> for ReturnsVisitor<'v> {
         // we only care about tail expressions when `in_block_tail` is `true`, which means that
         // they're in the return path of the function body.
         match ex.kind {
-            hir::ExprKind::Ret(Some(ex)) => {
+            hir::ExprKind::Ret(Some(ex)) | hir::ExprKind::Become(Some(ex)) => {
                 self.returns.push(ex);
             }
             hir::ExprKind::Block(block, _) if self.in_block_tail => {

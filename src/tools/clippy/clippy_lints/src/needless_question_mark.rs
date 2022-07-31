@@ -81,7 +81,7 @@ impl LateLintPass<'_> for NeedlessQuestionMark {
      */
 
     fn check_expr(&mut self, cx: &LateContext<'_>, expr: &'_ Expr<'_>) {
-        if let ExprKind::Ret(Some(e)) = expr.kind {
+        if let ExprKind::Ret(Some(e)) | ExprKind::Become(Some(e)) = expr.kind {
             check(cx, e);
         }
     }

@@ -754,7 +754,7 @@ impl<'a, 'tcx> SpanlessHash<'a, 'tcx> {
                 self.hash_expr(e);
                 self.hash_array_length(len);
             },
-            ExprKind::Ret(ref e) => {
+            ExprKind::Ret(ref e) | ExprKind::Become(ref e) => {
                 if let Some(e) = *e {
                     self.hash_expr(e);
                 }

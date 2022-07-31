@@ -1662,6 +1662,7 @@ impl Expr<'_> {
             ExprKind::Break(..) => ExprPrecedence::Break,
             ExprKind::Continue(..) => ExprPrecedence::Continue,
             ExprKind::Ret(..) => ExprPrecedence::Ret,
+            ExprKind::Become(..) => ExprPrecedence::Become,
             ExprKind::InlineAsm(..) => ExprPrecedence::InlineAsm,
             ExprKind::Struct(..) => ExprPrecedence::Struct,
             ExprKind::Repeat(..) => ExprPrecedence::Repeat,
@@ -1718,6 +1719,7 @@ impl Expr<'_> {
             | ExprKind::Break(..)
             | ExprKind::Continue(..)
             | ExprKind::Ret(..)
+            | ExprKind::Become(..)
             | ExprKind::Let(..)
             | ExprKind::Loop(..)
             | ExprKind::Assign(..)
@@ -1800,6 +1802,7 @@ impl Expr<'_> {
             | ExprKind::Break(..)
             | ExprKind::Continue(..)
             | ExprKind::Ret(..)
+            | ExprKind::Become(..)
             | ExprKind::Let(..)
             | ExprKind::Loop(..)
             | ExprKind::Assign(..)
@@ -1963,6 +1966,8 @@ pub enum ExprKind<'hir> {
     Continue(Destination),
     /// A `return`, with an optional value to be returned.
     Ret(Option<&'hir Expr<'hir>>),
+    /// A `become`, with an optional value to be returned.
+    Become(Option<&'hir Expr<'hir>>),
 
     /// Inline assembly (from `asm!`), with its outputs and inputs.
     InlineAsm(&'hir InlineAsm<'hir>),

@@ -309,6 +309,10 @@ fn test_expr() {
     assert_eq!(stringify_expr!(return), "return");
     assert_eq!(stringify_expr!(return true), "return true");
 
+    // ExprKind::Become
+    assert_eq!(stringify_expr!(become), "become");
+    assert_eq!(stringify_expr!(become true), "become true");
+
     // ExprKind::MacCall
     assert_eq!(stringify_expr!(mac!(...)), "mac!(...)");
     assert_eq!(stringify_expr!(mac![...]), "mac![...]");

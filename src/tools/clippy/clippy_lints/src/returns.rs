@@ -136,7 +136,7 @@ impl<'tcx> LateLintPass<'tcx> for Return {
             FnKind::Closure => {
                 // when returning without value in closure, replace this `return`
                 // with an empty block to prevent invalid suggestion (see #6501)
-                let replacement = if let ExprKind::Ret(None) = &body.value.kind {
+                let replacement = if let ExprKind::Ret(None) | ExprKind::Become(None) = &body.value.kind {
                     RetReplacement::Block
                 } else {
                     RetReplacement::Empty
@@ -177,7 +177,7 @@ fn check_final_expr<'tcx>(
 ) {
     match expr.kind {
         // simple return is always "bad"
-        ExprKind::Ret(ref inner) => {
+        ExprKind::Ret(ref inner) | ExprKind::Become(ref inner) => {
             // allow `#[cfg(a)] return a; #[cfg(b)] return b;`
             let attrs = cx.tcx.hir().attrs(expr.hir_id);
             if !attrs.iter().any(attr_is_cfg) {

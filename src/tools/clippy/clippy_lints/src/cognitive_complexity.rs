@@ -160,7 +160,7 @@ impl<'tcx> Visitor<'tcx> for CcHelper {
                 }
                 self.cc += arms.iter().filter(|arm| arm.guard.is_some()).count() as u64;
             },
-            ExprKind::Ret(_) => self.returns += 1,
+            ExprKind::Ret(_) | ExprKind::Become(_) => self.returns += 1,
             _ => {},
         }
     }

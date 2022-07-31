@@ -370,7 +370,7 @@ enum Expression {
 
 fn fetch_bool_block(expr: &Expr<'_>) -> Option<Expression> {
     match peel_blocks_with_stmt(expr).kind {
-        ExprKind::Ret(Some(ret)) => Some(Expression::RetBool(fetch_bool_expr(ret)?)),
+        ExprKind::Ret(Some(ret)) | ExprKind::Become(Some(ret)) => Some(Expression::RetBool(fetch_bool_expr(ret)?)),
         _ => Some(Expression::Bool(fetch_bool_expr(expr)?)),
     }
 }

@@ -29,7 +29,7 @@ pub(super) fn check<'tcx>(
         if let ExprKind::Block(block, _) = then.kind;
         if let [stmt] = block.stmts;
         if let StmtKind::Semi(semi) = stmt.kind;
-        if let ExprKind::Ret(Some(ret_value)) = semi.kind;
+        if let ExprKind::Ret(Some(ret_value)) | ExprKind::Become(Some(ret_value)) = semi.kind;
         if let ExprKind::Call(Expr { kind: ExprKind::Path(ctor), .. }, [inner_ret]) = ret_value.kind;
         if is_lang_ctor(cx, ctor, LangItem::OptionSome);
         if path_res(cx, inner_ret) == Res::Local(binding_id);
@@ -127,7 +127,7 @@ fn last_stmt_and_ret<'tcx>(
             if_chain! {
                 if let [.., snd_last, _] = block.stmts;
                 if let StmtKind::Semi(last_expr) = last_stmt.kind;
-                if let ExprKind::Ret(Some(ret)) = last_expr.kind;
+                if let ExprKind::Ret(Some(ret)) | ExprKind::Become(Some(ret)) = last_expr.kind;
                 then {
                     return Some((snd_last, ret));
                 }

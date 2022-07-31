@@ -168,7 +168,7 @@ fn never_loop_expr(expr: &Expr<'_>, main_loop_id: HirId) -> NeverLoopResult {
                 NeverLoopResult::AlwaysBreak
             }
         },
-        ExprKind::Break(_, e) | ExprKind::Ret(e) => e.as_ref().map_or(NeverLoopResult::AlwaysBreak, |e| {
+        ExprKind::Break(_, e) | ExprKind::Ret(e) | ExprKind::Become(e) => e.as_ref().map_or(NeverLoopResult::AlwaysBreak, |e| {
             combine_seq(never_loop_expr(e, main_loop_id), NeverLoopResult::AlwaysBreak)
         }),
         ExprKind::InlineAsm(asm) => asm

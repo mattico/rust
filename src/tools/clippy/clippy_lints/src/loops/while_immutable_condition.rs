@@ -72,7 +72,7 @@ impl<'tcx> Visitor<'tcx> for HasBreakOrReturnVisitor {
         }
 
         match expr.kind {
-            ExprKind::Ret(_) | ExprKind::Break(_, _) => {
+            ExprKind::Ret(_) | ExprKind::Become(_) | ExprKind::Break(_, _) => {
                 self.has_break_or_return = true;
                 return;
             },

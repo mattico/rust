@@ -94,7 +94,7 @@ pub fn walk_expr<'a, 'tcx: 'a, V: Visitor<'a, 'tcx>>(visitor: &mut V, expr: &Exp
             }
         }
         Continue { label: _ } => {}
-        Return { value } => {
+        Return { value } | Become { value } => {
             if let Some(value) = value {
                 visitor.visit_expr(&visitor.thir()[value])
             }

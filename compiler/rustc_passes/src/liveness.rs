@@ -465,6 +465,7 @@ impl<'tcx> Visitor<'tcx> for IrMaps<'tcx> {
             | hir::ExprKind::Lit(_)
             | hir::ExprKind::ConstBlock(..)
             | hir::ExprKind::Ret(..)
+            | hir::ExprKind::Become(..)
             | hir::ExprKind::Block(..)
             | hir::ExprKind::Assign(..)
             | hir::ExprKind::AssignOp(..)
@@ -960,7 +961,7 @@ impl<'a, 'tcx> Liveness<'a, 'tcx> {
                 self.propagate_through_expr(&e, ln)
             }
 
-            hir::ExprKind::Ret(ref o_e) => {
+            hir::ExprKind::Ret(ref o_e) | hir::ExprKind::Become(ref o_e) => {
                 // Ignore succ and subst exit_ln.
                 self.propagate_through_opt_expr(o_e.as_ref().map(|e| &**e), self.exit_ln)
             }
@@ -1414,6 +1415,7 @@ fn check_expr<'tcx>(this: &mut Liveness<'_, 'tcx>, expr: &'tcx Expr<'tcx>) {
         | hir::ExprKind::DropTemps(..)
         | hir::ExprKind::Unary(..)
         | hir::ExprKind::Ret(..)
+        | hir::ExprKind::Become(..)
         | hir::ExprKind::Break(..)
         | hir::ExprKind::Continue(..)
         | hir::ExprKind::Lit(_)

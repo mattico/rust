@@ -104,7 +104,7 @@ impl<'ast> Visitor<'ast> for BreakVisitor {
 
     fn visit_expr(&mut self, expr: &'ast Expr) {
         self.is_break = match expr.kind {
-            ExprKind::Break(..) | ExprKind::Continue(..) | ExprKind::Ret(..) => true,
+            ExprKind::Break(..) | ExprKind::Continue(..) | ExprKind::Ret(..) | ExprKind::Become(..) => true,
             ExprKind::Match(_, ref arms) => arms.iter().all(|arm| self.check_expr(&arm.body)),
             ExprKind::If(_, ref then, Some(ref els)) => self.check_block(then) && self.check_expr(els),
             ExprKind::If(_, _, None)

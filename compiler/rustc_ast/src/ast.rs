@@ -1124,7 +1124,7 @@ impl Expr {
                 // Implicit return
                 Some(StmtKind::Expr(_)) => true,
                 // Last statement is an explicit return?
-                Some(StmtKind::Semi(expr)) => matches!(expr.kind, ExprKind::Ret(_)),
+                Some(StmtKind::Semi(expr)) => matches!(expr.kind, ExprKind::Ret(_) | ExprKind::Become(_)),
                 // This is a block that doesn't end in either an implicit or explicit return.
                 _ => false,
             }
@@ -1254,6 +1254,7 @@ impl Expr {
             ExprKind::Break(..) => ExprPrecedence::Break,
             ExprKind::Continue(..) => ExprPrecedence::Continue,
             ExprKind::Ret(..) => ExprPrecedence::Ret,
+            ExprKind::Become(..) => ExprPrecedence::Become,
             ExprKind::InlineAsm(..) => ExprPrecedence::InlineAsm,
             ExprKind::MacCall(..) => ExprPrecedence::Mac,
             ExprKind::Struct(..) => ExprPrecedence::Struct,
@@ -1438,6 +1439,8 @@ pub enum ExprKind {
     Continue(Option<Label>),
     /// A `return`, with an optional value to be returned.
     Ret(Option<P<Expr>>),
+    /// A `become`, with an optional value to be returned.
+    Become(Option<P<Expr>>),
 
     /// Output of the `asm!()` macro.
     InlineAsm(P<InlineAsm>),

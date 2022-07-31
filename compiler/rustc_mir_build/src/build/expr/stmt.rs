@@ -95,7 +95,7 @@ impl<'a, 'tcx> Builder<'a, 'tcx> {
                 BreakableTarget::Break(label),
                 source_info,
             ),
-            ExprKind::Return { value } => this.break_scope(
+            ExprKind::Return { value } | ExprKind::Become { value } => this.break_scope(
                 block,
                 value.map(|value| &this.thir[value]),
                 BreakableTarget::Return,

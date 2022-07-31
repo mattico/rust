@@ -716,7 +716,7 @@ fn walk_parents<'tcx>(cx: &LateContext<'tcx>, e: &'tcx Expr<'_>) -> (Position, &
             },
 
             Node::Expr(parent) if parent.span.ctxt() == ctxt => match parent.kind {
-                ExprKind::Ret(_) => {
+                ExprKind::Ret(_) | ExprKind::Become(_) => {
                     let owner_id = cx.tcx.hir().body_owner(cx.enclosing_body.unwrap());
                     Some(
                         if let Node::Expr(Expr {

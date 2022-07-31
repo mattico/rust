@@ -520,8 +520,8 @@ fn is_relevant_expr(cx: &LateContext<'_>, typeck_results: &ty::TypeckResults<'_>
     }
     match &expr.kind {
         ExprKind::Block(block, _) => is_relevant_block(cx, typeck_results, block),
-        ExprKind::Ret(Some(e)) => is_relevant_expr(cx, typeck_results, e),
-        ExprKind::Ret(None) | ExprKind::Break(_, None) => false,
+        ExprKind::Ret(Some(e)) | ExprKind::Become(Some(e)) => is_relevant_expr(cx, typeck_results, e),
+        ExprKind::Ret(None) | ExprKind::Become(None) | ExprKind::Break(_, None) => false,
         _ => true,
     }
 }

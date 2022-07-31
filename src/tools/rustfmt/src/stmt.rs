@@ -63,7 +63,7 @@ impl<'a> Stmt<'a> {
 
         match self.as_ast_node().kind {
             ast::StmtKind::Expr(ref expr) => match expr.kind {
-                ast::ExprKind::Ret(..) | ast::ExprKind::Continue(..) | ast::ExprKind::Break(..) => {
+                ast::ExprKind::Ret(..) | ast::ExprKind::Become(..) | ast::ExprKind::Continue(..) | ast::ExprKind::Break(..) => {
                     false
                 }
                 _ => true,

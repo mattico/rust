@@ -284,7 +284,7 @@ pub(crate) fn semicolon_for_expr(context: &RewriteContext<'_>, expr: &ast::Expr)
     }
 
     match expr.kind {
-        ast::ExprKind::Ret(..) | ast::ExprKind::Continue(..) | ast::ExprKind::Break(..) => {
+        ast::ExprKind::Ret(..) | ast::ExprKind::Become(..) | ast::ExprKind::Continue(..) | ast::ExprKind::Break(..) => {
             context.config.trailing_semicolon()
         }
         _ => false,
@@ -298,7 +298,7 @@ pub(crate) fn semicolon_for_stmt(context: &RewriteContext<'_>, stmt: &ast::Stmt)
             ast::ExprKind::While(..) | ast::ExprKind::Loop(..) | ast::ExprKind::ForLoop(..) => {
                 false
             }
-            ast::ExprKind::Break(..) | ast::ExprKind::Continue(..) | ast::ExprKind::Ret(..) => {
+            ast::ExprKind::Break(..) | ast::ExprKind::Continue(..) | ast::ExprKind::Ret(..) | ast::ExprKind::Become(..) => {
                 context.config.trailing_semicolon()
             }
             _ => true,
@@ -502,6 +502,7 @@ pub(crate) fn is_block_expr(context: &RewriteContext<'_>, expr: &ast::Expr, repr
         | ast::ExprKind::Range(..)
         | ast::ExprKind::Repeat(..)
         | ast::ExprKind::Ret(..)
+        | ast::ExprKind::Become(..)
         | ast::ExprKind::Yeet(..)
         | ast::ExprKind::Tup(..)
         | ast::ExprKind::Type(..)

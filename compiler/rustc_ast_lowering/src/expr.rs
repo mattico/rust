@@ -240,6 +240,10 @@ impl<'hir> LoweringContext<'_, 'hir> {
                     let e = e.as_ref().map(|x| self.lower_expr(x));
                     hir::ExprKind::Ret(e)
                 }
+                ExprKind::Become(ref e) => {
+                    let e = e.as_ref().map(|x| self.lower_expr(x));
+                    hir::ExprKind::Become(e)
+                }
                 ExprKind::Yeet(ref sub_expr) => self.lower_expr_yeet(e.span, sub_expr.as_deref()),
                 ExprKind::InlineAsm(ref asm) => {
                     hir::ExprKind::InlineAsm(self.lower_inline_asm(e.span, asm))

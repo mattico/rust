@@ -136,7 +136,7 @@ impl<'a, 'tcx> DivergenceVisitor<'a, 'tcx> {
 impl<'a, 'tcx> Visitor<'tcx> for DivergenceVisitor<'a, 'tcx> {
     fn visit_expr(&mut self, e: &'tcx Expr<'_>) {
         match e.kind {
-            ExprKind::Continue(_) | ExprKind::Break(_, _) | ExprKind::Ret(_) => self.report_diverging_sub_expr(e),
+            ExprKind::Continue(_) | ExprKind::Break(_, _) | ExprKind::Ret(_) | ExprKind::Become(_) => self.report_diverging_sub_expr(e),
             ExprKind::Call(func, _) => {
                 let typ = self.cx.typeck_results().expr_ty(func);
                 match typ.kind() {

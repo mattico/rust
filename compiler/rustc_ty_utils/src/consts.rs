@@ -399,7 +399,7 @@ impl<'a, 'tcx> AbstractConstBuilder<'a, 'tcx> {
             ExprKind::Assign { .. } | ExprKind::AssignOp { .. } => {
                 self.error(node.span, "assignment is not supported in generic constants")?
             }
-            ExprKind::Closure { .. } | ExprKind::Return { .. } => self.error(
+            ExprKind::Closure { .. } | ExprKind::Return { .. } | ExprKind::Become { .. } => self.error(
                 node.span,
                 "closures and function keywords are not supported in generic constants",
             )?,

@@ -1383,6 +1383,8 @@ impl<'a> Parser<'a> {
             self.parse_try_block(lo, attrs)
         } else if self.eat_keyword(kw::Return) {
             self.parse_return_expr(attrs)
+        } else if self.eat_keyword(kw::Become) {
+            self.parse_become_expr(attrs)
         } else if self.eat_keyword(kw::Break) {
             self.parse_break_expr(attrs)
         } else if self.eat_keyword(kw::Yield) {
@@ -1679,6 +1681,14 @@ impl<'a> Parser<'a> {
     fn parse_return_expr(&mut self, attrs: AttrVec) -> PResult<'a, P<Expr>> {
         let lo = self.prev_token.span;
         let kind = ExprKind::Ret(self.parse_expr_opt()?);
+        let expr = self.mk_expr(lo.to(self.prev_token.span), kind, attrs);
+        self.maybe_recover_from_bad_qpath(expr)
+    }
+
+    /// Parse `"become" expr?`.
+    fn parse_become_expr(&mut self, attrs: AttrVec) -> PResult<'a, P<Expr>> {
+        let lo = self.prev_token.span;
+        let kind = ExprKind::Become(self.parse_expr_opt()?);
         let expr = self.mk_expr(lo.to(self.prev_token.span), kind, attrs);
         self.maybe_recover_from_bad_qpath(expr)
     }

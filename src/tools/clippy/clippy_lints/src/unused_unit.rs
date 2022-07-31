@@ -72,7 +72,7 @@ impl EarlyLintPass for UnusedUnit {
 
     fn check_expr(&mut self, cx: &EarlyContext<'_>, e: &ast::Expr) {
         match e.kind {
-            ast::ExprKind::Ret(Some(ref expr)) | ast::ExprKind::Break(_, Some(ref expr)) => {
+            ast::ExprKind::Ret(Some(ref expr)) | ast::ExprKind::Become(Some(ref expr)) | ast::ExprKind::Break(_, Some(ref expr)) => {
                 if is_unit_expr(expr) && !expr.span.from_expansion() {
                     span_lint_and_sugg(
                         cx,

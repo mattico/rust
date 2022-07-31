@@ -699,7 +699,7 @@ impl<'hir> Map<'hir> {
         let mut iter = self.parent_iter(id).peekable();
         let mut ignore_tail = false;
         if let Some(node) = self.find(id) {
-            if let Node::Expr(Expr { kind: ExprKind::Ret(_), .. }) = node {
+            if let Node::Expr(Expr { kind: ExprKind::Ret(_) | ExprKind::Become(_), .. }) = node {
                 // When dealing with `return` statements, we don't care about climbing only tail
                 // expressions.
                 ignore_tail = true;
@@ -721,7 +721,7 @@ impl<'hir> Map<'hir> {
                 | Node::Expr(Expr { kind: ExprKind::Closure { .. }, .. })
                 | Node::ImplItem(_) => return Some(hir_id),
                 // Ignore `return`s on the first iteration
-                Node::Expr(Expr { kind: ExprKind::Loop(..) | ExprKind::Ret(..), .. })
+                Node::Expr(Expr { kind: ExprKind::Loop(..) | ExprKind::Ret(..) | ExprKind::Become(..), .. })
                 | Node::Local(_) => {
                     return None;
                 }

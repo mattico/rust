@@ -917,6 +917,9 @@ pub fn walk_expr<'a, V: Visitor<'a>>(visitor: &mut V, expression: &'a Expr) {
         ExprKind::Ret(ref optional_expression) => {
             walk_list!(visitor, visit_expr, optional_expression);
         }
+        ExprKind::Become(ref optional_expression) => {
+            walk_list!(visitor, visit_expr, optional_expression);
+        }
         ExprKind::Yeet(ref optional_expression) => {
             walk_list!(visitor, visit_expr, optional_expression);
         }

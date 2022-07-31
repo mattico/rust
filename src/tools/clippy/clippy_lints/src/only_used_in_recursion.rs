@@ -342,13 +342,13 @@ impl<'tcx> Visitor<'tcx> for SideEffectVisit<'tcx> {
                 }
                 self.contains_side_effect = true;
             },
-            ExprKind::Ret(Some(expr)) => {
+            ExprKind::Ret(Some(expr)) | ExprKind::Become(Some(expr)) => {
                 self.visit_expr(expr);
                 let vars = std::mem::take(&mut self.ret_vars);
                 self.add_side_effect(vars);
                 self.contains_side_effect = true;
             },
-            ExprKind::Break(_, None) | ExprKind::Continue(_) | ExprKind::Ret(None) => {
+            ExprKind::Break(_, None) | ExprKind::Continue(_) | ExprKind::Ret(None) | ExprKind::Become(None) => {
                 self.contains_side_effect = true;
             },
             ExprKind::Struct(_, exprs, expr) => {

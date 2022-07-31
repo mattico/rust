@@ -186,7 +186,7 @@ fn lint_implicit_returns(
 
         // If expressions without an else clause, and blocks without a final expression can only be the final expression
         // if they are divergent, or return the unit type.
-        ExprKind::If(_, _, None) | ExprKind::Block(Block { expr: None, .. }, _) | ExprKind::Ret(_) => {
+        ExprKind::If(_, _, None) | ExprKind::Block(Block { expr: None, .. }, _) | ExprKind::Ret(_) | ExprKind::Become(_) => {
             LintLocation::Inner
         },
 
