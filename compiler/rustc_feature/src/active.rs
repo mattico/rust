@@ -310,6 +310,8 @@ declare_features! (
     (active, associated_type_defaults, "1.2.0", Some(29661), None),
     /// Allows `async || body` closures.
     (active, async_closure, "1.37.0", Some(62290), None),
+    /// Allows `become` keyword expressions.
+    (active, become_expr, "1.64.0", Some(99999), None),
     /// Allows `extern "C-unwind" fn` to enable unwinding across ABI boundaries.
     (active, c_unwind, "1.52.0", Some(74990), None),
     /// Allows using C-variadics.
@@ -442,6 +444,8 @@ declare_features! (
     (active, more_qualified_paths, "1.54.0", Some(86935), None),
     /// Allows the `#[must_not_suspend]` attribute.
     (active, must_not_suspend, "1.57.0", Some(83310), None),
+    /// Allows the `#[must_tail]` attribute.
+    (active, must_tail, "1.64.0", Some(99999), None),
     /// Allows using `#[naked]` on functions.
     (active, naked_functions, "1.9.0", Some(32408), None),
     /// Allows specifying the as-needed link modifier

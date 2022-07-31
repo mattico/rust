@@ -611,6 +611,17 @@ pub enum ChecksumKind {
     SHA256,
 }
 
+/// LLVMRustTailCallKind
+/// Note that 'MustTail' implies 'Tail'.
+#[derive(Copy, Clone)]
+#[repr(C)]
+pub enum TailCallKind {
+    None = 0,
+    Tail = 1,
+    MustTail = 2,
+    NoTail = 3,
+}
+
 extern "C" {
     type Opaque;
 }
@@ -1177,6 +1188,7 @@ extern "C" {
         NameLen: size_t,
     ) -> Option<&Value>;
     pub fn LLVMSetTailCall(CallInst: &Value, IsTailCall: Bool);
+    pub fn LLVMRustSetTailCallKind(CallInst: &Value, kind: TailCallKind);
 
     // Operations on attributes
     pub fn LLVMRustCreateAttrNoValue(C: &Context, attr: AttributeKind) -> &Attribute;

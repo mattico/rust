@@ -1965,3 +1965,29 @@ extern "C" int32_t LLVMRustGetElementTypeArgIndex(LLVMValueRef CallSite) {
 #endif
     return -1;
 }
+
+enum class LLVMRustTailCallKind {
+  None = 0,
+  Tail = 1,
+  MustTail = 2,
+  NoTail = 3,
+};
+
+static CallInst::TailCallKind fromRust(LLVMRustTailCallKind Kind) {
+  switch (Kind) {
+  case LLVMRustTailCallKind::None:
+    return CallInst::TailCallKind::None;
+  case LLVMRustTailCallKind::Tail:
+    return CallInst::TailCallKind::Tail;
+  case LLVMRustTailCallKind::MustTail:
+    return CallInst::TailCallKind::MustTail;
+  case LLVMRustTailCallKind::NoTail:
+    return CallInst::TailCallKind::NoTail;
+  default:
+    report_fatal_error("bad TailCallKind.");
+  }
+}
+
+extern "C" void LLVMRustSetTailCallKind(LLVMValueRef CallInst, TailCallKind TCK) {
+  unwrap<CallInst>(Call)->setTailCallKind(TCK);
+}
